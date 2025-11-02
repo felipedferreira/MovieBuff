@@ -1,5 +1,6 @@
 using Prometheus.MovieBuff.Presentation.Features.Movies.CreateMovie.v1;
 using Scalar.AspNetCore;
+using Serilog;
 
 namespace Prometheus.MovieBuff.Presentation;
 
@@ -9,8 +10,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Host.UseSerilog((context, configuration) =>
+        {
+            configuration.ReadFrom.Configuration(context.Configuration);
+        });
+
         builder.Services.AddEndpointsApiExplorer();
-        // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
 
@@ -28,7 +33,10 @@ public class Program
                 options.DarkMode = true;
             });
         }
-
+        
+        // logs requests
+        app.UseSerilogRequestLogging();
+        
         // Adds middleware for redirecting HTTP Requests to HTTPS. 
         app.UseHttpsRedirection();
         
