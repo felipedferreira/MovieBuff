@@ -1,3 +1,4 @@
+using Prometheus.MovieBuff.Presentation.Features.Movies.CreateMovie.v1;
 using Scalar.AspNetCore;
 
 namespace Prometheus.MovieBuff.Presentation;
@@ -28,27 +29,12 @@ public class Program
             });
         }
 
+        // Adds middleware for redirecting HTTP Requests to HTTPS. 
         app.UseHttpsRedirection();
-
-        var summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        app.MapGet("/weatherforecast", () =>
-            {
-                var forecast = Enumerable.Range(1, 5).Select(index =>
-                        new WeatherForecast
-                        (
-                            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                            Random.Shared.Next(-20, 55),
-                            summaries[Random.Shared.Next(summaries.Length)]
-                        ))
-                    .ToArray();
-                return forecast;
-            })
-            .WithName("GetWeatherForecast");
-
+        
+        // Maps endpoints
+        app.MapCreateMovieEndpoint();
+        
         await app.RunAsync();
     }
 }
