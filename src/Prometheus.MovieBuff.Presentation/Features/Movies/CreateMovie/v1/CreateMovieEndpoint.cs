@@ -6,10 +6,7 @@ internal static class CreateMovieEndpoint
     {
         app.MapPost("/movies", async (CreateMovieRequest request, CancellationToken cancellationToken = default) =>
         {
-            var id = Guid.NewGuid();
-            var result = new { id = id };
-            // TODO => return Results.CreatedAtRoute("", )
-            return Results.Created($"/movies/{id}", result);
+            return Results.Created();
         })
         .WithName("CreateMovie")
         .WithTags("Movies");
